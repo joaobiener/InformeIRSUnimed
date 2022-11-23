@@ -13,7 +13,11 @@ const CartoesBeneficiario = () =>
 
   const { data, loading, error, refetch } =   useFetch(urlApi);
 
-
+  
+  const GetInfoIR = (contrato,documentoTitular) => {
+    console.log(`contato: ${contrato} CPF do Titular = ${documentoTitular}`);
+   
+  };
 
     if (loading) return 
     (
@@ -34,59 +38,57 @@ const CartoesBeneficiario = () =>
     
   if (data)
   {
-   
-            return (
-              <>
-              
-                <div class="container mx-auto mt-5">
-                  <button onClick={() => navigate(-1)} type="button" class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
-                
-                        <div class="flex flex-col">
-                        <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                          <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="overflow-hidden">
-                              <table class="min-w-full">
-                                <thead class="bg-white border-b">
-                                  <tr>
-                                  
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                      Cartão de Beneficiário
-                                    </th>
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                      Contrato
-                                    </th>
-                                    <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                                      
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                                    
-                                    {data.map(({codigoCartaoBeneficiario, documentoBenefiario, documentoTitular, contrato }) => (
-                                        <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
-                                        
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                          {codigoCartaoBeneficiario}
-                                        </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                          {contrato}
-                                        </td>
-                                        <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                        <button type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button>
-                                        </td>
-                                      </tr>
-                                  
-                                    ))}
+      return (
+        <>
+        
+          <div class="container mx-auto mt-5">
+            <button onClick={() => navigate(-1)} type="button" class="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+          
+                  <div class="flex flex-col">
+                  <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                    <div class="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                      <div class="overflow-hidden">
+                        <table class="min-w-full">
+                          <thead class="bg-white border-b">
+                            <tr>
+                            
+                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                Cartão de Beneficiário
+                              </th>
+                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                                Contrato
+                              </th>
+                              <th scope="col" class="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                                 
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                        </div>
-                      </div>  
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                                              
+                              {data.map(({codigoCartaoBeneficiario, documentoBenefiario, documentoTitular, contrato }) => (
+                                  <tr class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                                  
+                                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {codigoCartaoBeneficiario}
+                                  </td>
+                                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                    {contrato}
+                                  </td>
+                                  <td class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                                  <button  onClick={() => GetInfoIR(contrato,documentoTitular)} type="button" class="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button>
+                                  </td>
+                                </tr>
+                            
+                              ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
-                  </>
-              )
+                  </div>
+                </div>  
+              </div>
+            </>
+        )
 
 
   }
