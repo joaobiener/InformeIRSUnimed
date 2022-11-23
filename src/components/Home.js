@@ -1,8 +1,13 @@
 import ArquivosList from "./ArquivosList";
 
+
 const Home = () =>
 {
-    return <ArquivosList />;
+    return <>
+
+        <ArquivosList />
+    </>
+    ;
 };
 
 export default Home;
