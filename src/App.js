@@ -5,6 +5,8 @@ import Home from "./components/Home";
 import NoPage from "./components/NoPage";
 import CartoesBeneficiario from './components/CartoesBeneficiario';
 import Footer from './components/Footer';
+import InformeIR from './components/InformeIR';
+import Header from './components/Header';
 
 
 function App()
@@ -15,6 +17,7 @@ function App()
           <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/CartoesBeneficiario"  element={<CartoesBeneficiario />} />
+          <Route path="/InformeIR"  element={<InformeIR />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>

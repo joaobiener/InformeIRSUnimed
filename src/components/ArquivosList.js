@@ -20,7 +20,7 @@ const ArquivosList = props => {
   
 
   const onSubmit = (data) => {
-    alert(JSON.stringify(data));
+   // alert(JSON.stringify(data));
     navigate('/CartoesBeneficiario', { state: { data:data } });    
   };
 
