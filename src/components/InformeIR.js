@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import useFetch from '../useFetch.js';
 import { useNavigate } from "react-router-dom";
 
+
 const InformeIR = () =>
 {
   const navigate = useNavigate();
@@ -13,14 +14,19 @@ const InformeIR = () =>
   const { data, loading, error, refetch } = useFetch(urlApi);
 
 
-  const GetInfoIRPDF = (contrato, documentoTitular) =>
+  const GetInfoIRPDF = (data) =>
   {
-    //console.log(`contato: ${contrato} CPF do Titular = ${documentoTitular}`);
+      navigate('/InformePDFNovo',
+      {
+        state:
+        {
+          data: data
+        }
+      });
 
   };
 
   var cpf = "00000000000";
-
 
   const formataCPF = (cpf) =>
   {
@@ -30,11 +36,12 @@ const InformeIR = () =>
     //realizar a formatação...
       return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   }
-
+  
   const formateCurrency = (valor)  =>
   {
     return valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
   }
+  
 
   if (loading) return
   (
@@ -52,13 +59,17 @@ const InformeIR = () =>
       </div>;
     </>
   )
+ 
 
-  if (data)
-  {
+  if ( data) {
+   let temPagamentos = data.filter(data => data.tipoRegisto <=2).length>0
+    let temReembolso = data.filter(data => data.tipoRegisto >=3).length>0
+    
     return (
       <>
       
-        
+      <button onClick={() => GetInfoIRPDF(data)} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button>
+    
         <div className="container mx-auto mt-5 px-4">
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -78,7 +89,7 @@ const InformeIR = () =>
                           Cliente
                       </th>
                       <td className="py-4 px-6">
-                        {data[0].nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)}
+                        {/* {data[0].nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)} */}
                       </td>
                   </tr>
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -94,70 +105,128 @@ const InformeIR = () =>
           </div>
 
           <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+          
+          {temPagamentos &&
+          
+            <div className="flex flex-col">
+              <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="overflow-hidden">
+                    <table className="min-w-full">
+                      <thead className="bg-white border-b">
+                        <tr>
 
-          <div className="flex flex-col">
-            <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-              <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                <div className="overflow-hidden">
-                  <table className="min-w-full">
-                    <thead className="bg-white border-b">
-                      <tr>
-
-                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                          CPF
-                        </th>
-                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                          Data de Inclusão
-                        </th>
-                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                          Grau de Parantesco
-                        </th>
-                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                          Nome
-                        </th>                        
-                        <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                          Valor Pago
-                        </th>   
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                      {data.map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,valorInforme ,tipoRegisto,index}) => (
-                        
-                        <tr key="{index}" className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
-
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                          {formataCPF(documentoBenefiario)}
-                          </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {dataInclusaoBeneficiario}
-                          </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {tipoDependencia}
-                          </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {nomeBeneficiario}
-                          </td>
-                          <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {formateCurrency(valorInforme)}
-                          </td>
-
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            CPF
+                          </th>
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Data de Inclusão
+                          </th>
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Grau de Parantesco
+                          </th>
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Nome
+                          </th>                        
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Valor Pago
+                          </th>   
                         </tr>
+                      </thead>
+                      <tbody>
+                        {data.filter(data => data.tipoRegisto <=2).map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,valorInforme ,tipoRegisto}) => (
+                          
+                          <tr  className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
 
-                      ))}
-                    </tbody>
-                  </table>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                            {formataCPF(documentoBenefiario)}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {dataInclusaoBeneficiario}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {tipoDependencia}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {nomeBeneficiario}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {formateCurrency(valorInforme)}
+                            </td>
+
+                          </tr>
+
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
+          {temReembolso &&
+          
+            <div className="flex flex-col">
+              <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
+                  <div className="overflow-hidden">
+                    <table className="min-w-full">
+                      <thead className="bg-white border-b">
+                        <tr>
+
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Matricula
+                          </th>
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                           Valor Reembolsado
+                          </th>
+                          
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            Emissor
+                          </th>                        
+                          <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            CPF/CNPJ
+                          </th>   
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {data.filter(data => data.tipoRegisto >=3).map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,codigoCartaoBeneficiario,valorInforme ,tipoRegisto}) => (
+                          
+                          <tr  className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
+
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                             {codigoCartaoBeneficiario}                            
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {formateCurrency(valorInforme)}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {nomeBeneficiario}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              {documentoBenefiario}
+                            </td>
+                           
+                           
+                           
+
+                          </tr>
+
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }          
         </div>
       </>
     )
 
-
+ }
   }
-}
+
 
 
 export default InformeIR
