@@ -15,13 +15,13 @@ function App()
     <BrowserRouter>
       <Routes>
           <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/CartoesBeneficiario"  element={<CartoesBeneficiario />} />
           <Route path="/InformeIR"  element={<InformeIR />} />
           <Route path="*" element={<NoPage />} />
         </Route>
       </Routes>
-      <Footer />
+
     </BrowserRouter>
   );
 }

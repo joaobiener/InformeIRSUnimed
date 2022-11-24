@@ -1,5 +1,5 @@
 const Footer = () => {
-    return <footer className="absolute bottom-10 left-0 w-full container mx-auto px-6">
+    return <footer className="absolute bottom-0 left-0 w-full container mx-auto px-6">
 
                 <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <div className="sm:flex sm:items-center sm:justify-between">
