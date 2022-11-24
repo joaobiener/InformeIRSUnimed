@@ -48,7 +48,7 @@ const ArquivosList = () => {
     return (
       <>
 
-        <div className="container mx-auto mt-5">
+        <div className="container mt-5 px-4">
         
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="w-60 text-align">
@@ -90,7 +90,7 @@ const ArquivosList = () => {
   {
     return (
       <div className="context">
-        <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+        <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
           Informe para Imposto de Renda não disponível!
         </label>
       </div>

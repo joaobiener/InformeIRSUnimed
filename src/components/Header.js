@@ -1,35 +1,77 @@
-const Header = () => {
-    return 
-        <>
-            <div className="context">
-                <nav className="flex items-center justify-between flex-wrap bg-green-700 p-6">
-                    <div className="flex items-center flex-shrink-0 text-white mr-6">
-                
-                    <span className="font-semibold text-xl tracking-tight">Unimed Leste Fluminetnse</span>
-                    </div>
-                    <div className="block lg:hidden">
-                    <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
-                        <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Menu</title><path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" /></svg>
-                    </button>
-                    </div>
-                    <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-                    <div className="text-sm lg:flex-grow">
+import { useState } from "react"; // import state
+import MeuLogo from "../LogoUnimedFiqueSeguro.jpg"
 
-                        <a href="/" className="cursor-pointer block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
-                        Home
-                        </a>
-                        
+export default function Header() {
+  const [isNavOpen, setIsNavOpen] = useState(false); // initiate isNavOpen state with false
 
-                    </div>
+  return (
+    <div className="flex items-center justify-between border-b border-gray-400 py-4 px-4">
+      <a href="/">
+        <img src={MeuLogo} className="rounded-full w-25 h-20" alt="logo" />
+      </a>
+      <nav>
+        <section className="MOBILE-MENU flex lg:hidden">
+          <div
+            className="HAMBURGER-ICON space-y-2"
+            onClick={() => setIsNavOpen((prev) => !prev)} // toggle isNavOpen state on click
+          >
+            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
+            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
+            <span className="block h-0.5 w-8 animate-pulse bg-gray-600"></span>
+          </div>
 
-                    </div>
-                </nav>
-
+          <div className={isNavOpen ? "showMenuNav" : "hideMenuNav"}> 
+            <div
+              className="CROSS-ICON absolute top-0 right-0 px-8 py-8"
+              onClick={() => setIsNavOpen(false)} // change isNavOpen state to false to close the menu
+            >
+              <svg
+                className="h-8 w-8 text-gray-600"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
             </div>
-            </>   
-        
-  };
+            <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
+              <li className="border-b border-gray-400 my-8 uppercase">
+                <a href="/">Informe IR</a>
+              </li>
+            
+            </ul>
+          </div>
+        </section>
 
-  export default Header;
-  
-
+        <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
+          <li>
+            <a href="/">Informe IR</a>
+          </li>
+        </ul>
+      </nav>
+      <style>{`
+      .hideMenuNav {
+        display: none;
+      }
+      .showMenuNav {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100vh;
+        top: 0;
+        left: 0;
+        background: white;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+    `}</style>
+    </div>
+  );
+}

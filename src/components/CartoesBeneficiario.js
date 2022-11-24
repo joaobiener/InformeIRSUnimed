@@ -17,7 +17,7 @@ const CartoesBeneficiario = () =>
   (
     <>
 
-      <div className="container mx-auto mt-5">
+      <div className="container mx-auto mt-5 px-4">
 
         <div role="status">
           <svg className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,7 @@ const CartoesBeneficiario = () =>
     return (
       <>
 
-        <div className="container mx-auto mt-5">
+        <div className="container mx-auto mt-5 px-4">
           <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
 
           <div className="flex flex-col">
@@ -75,8 +75,8 @@ const CartoesBeneficiario = () =>
                     </thead>
                     <tbody>
 
-                      {data.map(({ codigoCartaoBeneficiario, documentoBenefiario, documentoTitular, contrato, anoReferencia }) => (
-                        <tr className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                      {data.map(({ codigoCartaoBeneficiario, documentoBenefiario, documentoTitular, contrato, anoReferencia,index }) => (
+                        <tr key="{index}" className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             {codigoCartaoBeneficiario}

@@ -40,7 +40,7 @@ const InformeIR = () =>
   (
     <>
 
-      <div className="container mx-auto mt-5">
+      <div className="container mx-auto mt-5 px-4">
 
         <div role="status">
           <svg className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -59,7 +59,7 @@ const InformeIR = () =>
       <>
       
         
-        <div className="container mx-auto mt-5">
+        <div className="container mx-auto mt-5 px-4">
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -122,7 +122,7 @@ const InformeIR = () =>
                     </thead>
                     <tbody>
 
-                      {data.map( index => ({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,valorInforme ,tipoRegisto}) => (
+                      {data.map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,valorInforme ,tipoRegisto,index}) => (
                         
                         <tr key="{index}" className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
 
