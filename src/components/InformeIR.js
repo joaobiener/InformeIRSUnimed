@@ -57,11 +57,22 @@ const InformeIR = () =>
 
   const formataCPF = (cpf) =>
   {
-    //retira os caracteres indesejados...
-    cpf = cpf.replace(/[^\d]/g, "");
+    if (cpf.length===11)
+    {
+      //retira os caracteres indesejados...
+      cpf = cpf.replace(/[^\d]/g, "");
 
-    //realizar a formatação...
-    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+      //realizar a formatação...
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    else 
+    {
+      //27.459.372/0001-37
+      cpf = cpf.replace(/[^\d]/g, "");
+
+      //realizar a formatação...
+      return cpf.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+    }
   }
 
   const formateCurrency = (valor) =>
@@ -94,6 +105,7 @@ const InformeIR = () =>
   {
     let temPagamentos = data.filter(data => data.tipoRegisto <= 2).length > 0
     let temReembolso = data.filter(data => data.tipoRegisto >= 3).length > 0
+    let nomeTitular = data.filter(data => data.tipoDependencia == "Titular")[0].nomeBeneficiario;
 
     return (
       <>
@@ -147,7 +159,7 @@ const InformeIR = () =>
                     Cliente
                   </th>
                   <td className="py-4 px-6">
-                    {data[0].nomeBeneficiario} - CPF: {formataCPF(data[0].documentoTitular)}
+                    {nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)}
                   </td>
                 </tr>
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -166,7 +178,14 @@ const InformeIR = () =>
                     {formataMatricula(data[0].codigoCartaoTitular)}
                   </td>
                 </tr>
-
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Data Inclusão
+                  </th>
+                  <td className="py-4 px-6">
+                    {reverseData(data[0].dataInclusaoBeneficiario.substring(0,10))}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -174,8 +193,8 @@ const InformeIR = () =>
 
           {temPagamentos &&
             <>
-              <h3 className="px-5">Beneficiários:</h3>
-              <div className="flex flex-col px-">
+              <h3 className="px-6">Beneficiários:</h3>
+              <div className="flex flex-col px-8">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-4 lg:px-4">
                     <div className="overflow-hidden">
@@ -236,7 +255,7 @@ const InformeIR = () =>
           }
           {temReembolso &&
             <>
-              <h3 className="px-5 py-4">Reembolso:</h3>
+              <h3 className="px-8 py-4">Reembolso:</h3>
               <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -275,7 +294,7 @@ const InformeIR = () =>
                                 {reembolso.nomeBeneficiario}
                               </td>
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {reembolso.documentoBenefiario}
+                                {formataCPF(reembolso.documentoBenefiario)}
                               </td>
 
 
