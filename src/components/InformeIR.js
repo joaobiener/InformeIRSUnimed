@@ -1,10 +1,18 @@
 import { useLocation } from "react-router-dom";
 import useFetch from '../useFetch.js';
 import { useNavigate } from "react-router-dom";
+import React, {useRef} from "react";
+import {useReactToPrint} from 'react-to-print';
 
 
 const InformeIR = () =>
 {
+  const componentRef = useRef();
+  const handePrint = useReactToPrint({
+    content: () => componentRef.current,
+    documentTitle: 'emp-data'
+  });
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -16,7 +24,7 @@ const InformeIR = () =>
 
   const GetInfoIRPDF = (data) =>
   {
-      navigate('/InformePDFNovo',
+    navigate('/InformePDFNovo',
       {
         state:
         {
@@ -27,21 +35,40 @@ const InformeIR = () =>
   };
 
   var cpf = "00000000000";
+  var matricula = "0000000000000";
+
+
+  const formataData = (data) =>
+  {
+    //retira os caracteres indesejados...
+
+    //realizar a formatação...
+    return new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(data);
+
+  }
+  const formataMatricula = (matricula) =>
+  {
+    //retira os caracteres indesejados...
+    matricula = matricula.replace(/[^\d]/g, "");
+
+    //realizar a formatação...
+    return matricula.replace(/(\d{4})(\d{6})(\d{2})(\d{1})/, "$1.$2.$3-$4");
+  }
 
   const formataCPF = (cpf) =>
   {
     //retira os caracteres indesejados...
     cpf = cpf.replace(/[^\d]/g, "");
-    
+
     //realizar a formatação...
-      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   }
-  
-  const formateCurrency = (valor)  =>
+
+  const formateCurrency = (valor) =>
   {
-    return valor.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'});
+    return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
-  
+
 
   if (loading) return
   (
@@ -59,61 +86,75 @@ const InformeIR = () =>
       </div>;
     </>
   )
- 
 
-  if ( data) {
-   let temPagamentos = data.filter(data => data.tipoRegisto <=2).length>0
-    let temReembolso = data.filter(data => data.tipoRegisto >=3).length>0
-    
+
+  if (data)
+  {
+    let temPagamentos = data.filter(data => data.tipoRegisto <= 2).length > 0
+    let temReembolso = data.filter(data => data.tipoRegisto >= 3).length > 0
+
     return (
       <>
-      
-      <button onClick={() => GetInfoIRPDF(data)} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button>
-    
-        <div className="container mx-auto mt-5 px-4">
+
+        {/* <button onClick={() => GetInfoIRPDF(data)} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button> */}
+        <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+        <button onClick={handePrint} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">Imprimir</button>
+
+        <div ref={componentRef} className="container mx-auto mt-5 px-4">
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" className="py-3 px-6 ">
-                            Informe de Pagamento -  <span className="text-red-800">{data[0].anoReferencia}</span>
-                        </th>
-                        <th scope="col" className="py-3 px-6 ">
-                            
-                        </th>                        
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Cliente
-                      </th>
-                      <td className="py-4 px-6">
-                        {/* {data[0].nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)} */}
-                      </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                          Contrato
-                      </th>
-                      <td className="py-4 px-6">
-                        {data[0].contrato}
-                      </td>
-                  </tr>              
-                </tbody>
-              </table>
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" className="py-3 px-6 ">
+                    Informe de Pagamento -  <span className="text-red-800">{data[0].anoReferencia}</span>
+                  </th>
+                  <th scope="col" className="py-3 px-6 ">
+
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Cliente
+                  </th>
+                  <td className="py-4 px-6">
+                    {data[0].nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Contrato
+                  </th>
+                  <td className="py-4 px-6">
+                    {data[0].contrato}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Codigo Beneficiário
+                  </th>
+                  <td className="py-4 px-6">
+                    {formataMatricula(data[0].codigoCartaoTitular)}
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
           </div>
 
-          <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
-          
+        
           {temPagamentos &&
-          
+          <>
+            <h3 className="px-5">Usuários:</h3>
             <div className="flex flex-col">
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                   <div className="overflow-hidden">
                     <table className="min-w-full">
                       <thead className="bg-white border-b">
+
+                        
                         <tr>
 
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
@@ -127,31 +168,31 @@ const InformeIR = () =>
                           </th>
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             Nome
-                          </th>                        
+                          </th>
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             Valor Pago
-                          </th>   
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.filter(data => data.tipoRegisto <=2).map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,valorInforme ,tipoRegisto}) => (
-                          
-                          <tr  className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
+                        {data.filter(data => data.tipoRegisto <= 2).map((pagamento, index) => (
+
+                          <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {formataCPF(documentoBenefiario)}
+                              {formataCPF(pagamento.documentoBenefiario)}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {dataInclusaoBeneficiario}
+                              {pagamento.dataInclusaoBeneficiario.substring(0, 10)}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {tipoDependencia}
+                              {pagamento.tipoDependencia}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {nomeBeneficiario}
+                              {pagamento.nomeBeneficiario}
                             </td>
-                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {formateCurrency(valorInforme)}
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap text-right">
+                              {formateCurrency(pagamento.valorInforme)}
                             </td>
 
                           </tr>
@@ -163,9 +204,11 @@ const InformeIR = () =>
                 </div>
               </div>
             </div>
+            </>
           }
           {temReembolso &&
-          
+          <>
+            <h3 className="px-5 py-4">Reembolso:</h3>
             <div className="flex flex-col">
               <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -178,37 +221,35 @@ const InformeIR = () =>
                             Matricula
                           </th>
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                           Valor Reembolsado
+                            Valor Reembolsado
                           </th>
-                          
+
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             Emissor
-                          </th>                        
+                          </th>
                           <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                             CPF/CNPJ
-                          </th>   
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
-                        {data.filter(data => data.tipoRegisto >=3).map(({ documentoBenefiario, dataInclusaoBeneficiario, nomeBeneficiario,tipoDependencia,codigoCartaoBeneficiario,valorInforme ,tipoRegisto}) => (
-                          
-                          <tr  className={`border-b transition duration-300 ease-in-out hover:bg-gray-100 ${tipoRegisto=4 ? "bg-red" : "bg-white"}`}>
+                        {data.filter(data => data.tipoRegisto >= 3).map((reembolso, index) => (
+
+                          <tr className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                             {codigoCartaoBeneficiario}                            
+                              {reembolso.codigoCartaoBeneficiario}
+                            </td>
+                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap text-right">
+                              {formateCurrency(reembolso.valorInforme)}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {formateCurrency(valorInforme)}
+                              {reembolso.nomeBeneficiario}
                             </td>
                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {nomeBeneficiario}
+                              {reembolso.documentoBenefiario}
                             </td>
-                            <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {documentoBenefiario}
-                            </td>
-                           
-                           
-                           
+
 
                           </tr>
 
@@ -219,13 +260,14 @@ const InformeIR = () =>
                 </div>
               </div>
             </div>
-          }          
+            </>
+          }
         </div>
       </>
     )
 
- }
   }
+}
 
 
 
