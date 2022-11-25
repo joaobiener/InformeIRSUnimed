@@ -8,6 +8,15 @@ const CartoesBeneficiario = () =>
   const location = useLocation();
 
   let urlApi = `https://localhost:7095/api/InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
+ 
+  const formataMatricula = (matricula) =>
+  {
+    //retira os caracteres indesejados...
+    matricula = matricula.replace(/[^\d]/g, "");
+
+    //realizar a formatação...
+    return matricula.replace(/(\d{4})(\d{6})(\d{2})(\d{1})/, "$1.$2.$3-$4");
+  }
 
 
   const { data, loading, error, refetch } = useFetch(urlApi);
@@ -79,7 +88,7 @@ const CartoesBeneficiario = () =>
                         <tr key="{index}" className="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                            {codigoCartaoBeneficiario}
+                            {formataMatricula(codigoCartaoBeneficiario)}
                           </td>
                           <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                             {contrato}

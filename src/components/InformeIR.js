@@ -69,6 +69,10 @@ const InformeIR = () =>
     return valor.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' });
   }
 
+  const reverseData = (str) =>
+  {
+    return str.split('-').reverse().join('-');
+ }
 
   if (!data) return
   (
@@ -96,19 +100,26 @@ const InformeIR = () =>
     return (
       <>
 
-        {/* <button onClick={() => GetInfoIRPDF(data)} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-white font-medium text-xs leading-tight uppercase rounded-full shadow-md hover:bg-green-600 hover:shadow-lg focus:bg-green-600 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-700 active:shadow-lg transition duration-150 ease-in-out">Download IR</button> */}
-        <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
-        <button onClick={handePrint} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">Imprimir</button>
+     
+        <diV className="flex flex-row">
+          <diV   className="grow">
+              <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+          </diV>
+          <diV >
+            <button onClick={handePrint} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">Imprimir</button>
+          </diV>
+        </diV>
 
+      
         <div ref={componentRef} className="container mx-auto mt-5 px-4">
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                  <th colspan="1" scope="col" className="py-3 px-6 ">
+                  <th colSpan="1" scope="col" className="py-3 px-6 ">
                   <img src={Logo}/>
                   </th>
-                  <th colspan="1" scope="col" className="py-3 px-6 ">
+                  <th colSpan="1" scope="col" className="py-3 px-6 ">
                   <span className="inline uppercase">
                         Unimed São Gonçalo/Niteroi 
                     <br/>Cooperativa de trabalho médico 
@@ -116,7 +127,7 @@ const InformeIR = () =>
                     <br/>CPNJ 28.630.531/0001-87 - INSC. ESTADUAL ISENTO
                   </span>
                   </th>
-                  <th colspan="1" scope="col" className="py-3 px-4 ">
+                  <th colSpan="1" scope="col" className="py-3 px-4 ">
                    ANS - Nº 34.3731
                   </th>
                 </tr>
@@ -138,7 +149,7 @@ const InformeIR = () =>
                     Cliente
                   </th>
                   <td className="py-4 px-6">
-                    {data[0].nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)}
+                    {data[0].nomeBeneficiario} - CPF: {formataCPF(data[0].documentoTitular)}
                   </td>
                 </tr>
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -165,8 +176,8 @@ const InformeIR = () =>
 
           {temPagamentos &&
             <>
-              <h3 className="px-5">Usuários:</h3>
-              <div className="flex flex-col">
+              <h3 className="px-5">Beneficiários:</h3>
+              <div className="flex flex-col px-5">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-4 lg:px-4">
                     <div className="overflow-hidden">
@@ -202,7 +213,7 @@ const InformeIR = () =>
                                 {formataCPF(pagamento.documentoBenefiario)}
                               </td>
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {pagamento.dataInclusaoBeneficiario.substring(0, 10)}
+                                {reverseData(pagamento.dataInclusaoBeneficiario.substring(0, 10))}
                               </td>
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 {pagamento.tipoDependencia}
@@ -257,7 +268,7 @@ const InformeIR = () =>
                             <tr className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {reembolso.codigoCartaoBeneficiario}
+                                {formataMatricula(reembolso.codigoCartaoBeneficiario)}
                               </td>
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap text-right">
                                 {formateCurrency(reembolso.valorInforme)}
