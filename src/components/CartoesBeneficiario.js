@@ -7,7 +7,8 @@ const CartoesBeneficiario = () =>
   const navigate = useNavigate();
   const location = useLocation();
 
-  let urlApi = `https://localhost:7095/api/InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
+  //let urlApi = `https://localhost:7095/api/InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
+
 
   const formataMatricula = (matricula) =>
   {
@@ -18,7 +19,7 @@ const CartoesBeneficiario = () =>
     return matricula.replace(/(\d{4})(\d{6})(\d{2})(\d{1})/, "$1.$2.$3-$4");
   }
 
-
+  let urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
   const { data, loading, error, refetch } = useFetch(urlApi);
 
 

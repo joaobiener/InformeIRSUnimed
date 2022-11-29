@@ -15,7 +15,9 @@ const ArquivosList = () =>
     }
   });
 
-  const { data, loading, error, refetch } = useFetch("https://localhost:7095/api/Arquivo");
+  let urlApi = `${process.env.REACT_APP_API_URL}Arquivo`
+
+  const { data, loading, error, refetch } = useFetch(urlApi);
 
   
 

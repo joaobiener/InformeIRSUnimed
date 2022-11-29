@@ -11,6 +11,7 @@ export default function Header()
                 <img src={Logo} className="rounded w-25 h-20" alt="logo" />
             </a>
             <nav>
+
                 <section className="MOBILE-MENU flex lg:hidden">
                     <div
                         className="HAMBURGER-ICON space-y-2"
