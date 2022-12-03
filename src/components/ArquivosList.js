@@ -1,7 +1,7 @@
 import useFetch from '../useFetch.js';
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
+import Aviso from '../Aviso.jpg'
 
 const ArquivosList = () =>
 {
@@ -107,8 +107,13 @@ const ArquivosList = () =>
   else
   {
     return (
-      <div className="context">
+      
+      <div className="text-center mt-10">
+        
         <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
+        <img src={Aviso} className="ml-10 w-24 h-24 ..." alt="Aviso" />
+        <br />
+
           Informe para Imposto de Renda não disponível!
         </label>
       </div>

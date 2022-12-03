@@ -16,7 +16,7 @@ const InformeIR = () =>
   const navigate = useNavigate();
   const location = useLocation();
 
-    
+
   let urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoContratoDocumentoTitular/${location.state.ano}/${location.state.Contrato}/${location.state.DocumentoTitular}`;
 
   const { data, loading, error, refetch } = useFetch(urlApi);
@@ -64,7 +64,7 @@ const InformeIR = () =>
   if (loading) 
   {
     return (
-      <div className="text-center mt-10">
+      <div className="text-center mt-10 ">
         <button disabled type="button" className="py-2.5 px-5 mr-2 text-sm font-medium text-gray-900 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 inline-flex items-center">
           <svg role="status" className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -91,15 +91,15 @@ const InformeIR = () =>
 
         <div className="flex flex-row">
           <div className="grow">
-            <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+            <button onClick={() => navigate(-1)} type="button" className="ml-10 mt-5 inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
           </div>
           <div >
-            <button onClick={handePrint} type="button" className="inline-block px-6 py-2.5 bg-green-500 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">Imprimir</button>
+            <button onClick={handePrint} type="button" className="mr-10 mt-5 inline-block px-6 py-2.5 bg-green-500 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-150 ease-in-out">Imprimir</button>
           </div>
         </div>
 
 
-        <div ref={componentRef} className="container mx-auto mt-5 px-4">
+        <div ref={componentRef} className="container mx-auto mt-5 px-8">
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -172,9 +172,9 @@ const InformeIR = () =>
           {temPagamentos &&
             <>
               <h3 className="px-6">Beneficiários:</h3>
-              <div className="flex flex-col px-4">
+              <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
-                  <div className="py-2 inline-block min-w-full sm:px-4 lg:px-4">
+                  <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
                       <table className="min-w-full">
                         <thead className="bg-white border-b">
@@ -183,11 +183,7 @@ const InformeIR = () =>
                           <tr>
 
                             <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                               Matrícula 
-                            </th>
-  
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                              CPF
+                            Matrícula / CPF
                             </th>
                             <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
                               Data de Inclusão
@@ -207,14 +203,10 @@ const InformeIR = () =>
                           {data.filter(data => data.tipoRegisto <= 2).map((pagamento, index) => (
 
                             <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
-
-
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {formataMatricula(pagamento.codigoCartaoBeneficiario)}
-                              </td>
+                              
 
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {formataCPF(pagamento.documentoBenefiario)}
+                              {formataMatricula(pagamento.codigoCartaoBeneficiario)} <br /> {formataCPF(pagamento.documentoBenefiario)}
                               </td>
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 {reverseData(pagamento.dataInclusaoBeneficiario.substring(0, 10))}
@@ -270,7 +262,7 @@ const InformeIR = () =>
                         <tbody>
                           {data.filter(data => data.tipoRegisto >= 3).map((reembolso, index) => (
 
-                            <tr className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr key={index}  className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
                               <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                 {formataMatricula(reembolso.codigoCartaoBeneficiario)}

@@ -10,6 +10,15 @@ export default function Header()
             <a href="/">
                 <img src={Logo} className="rounded w-25 h-20" alt="logo" />
             </a>
+
+            {
+                process.env.REACT_APP_API_TESTE != "Produção" &&
+                <div className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ...">
+                    <p>{process.env.REACT_APP_API_TESTE}</p>
+                </div>
+            }
+
+
             <nav>
 
                 <section className="MOBILE-MENU flex lg:hidden">
@@ -51,7 +60,7 @@ export default function Header()
 
                 <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
                     <li>
-                        <a href="/">Informe de Contribuições para Imposto de Renda</a>
+                        <a className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ..." href="/">Informe de Contribuições para Imposto de Renda</a>
                     </li>
                 </ul>
             </nav>
