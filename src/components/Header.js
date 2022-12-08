@@ -14,7 +14,8 @@ export default function Header()
             {
                 process.env.REACT_APP_API_TESTE != "Produção" &&
                 <div className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ...">
-                    <p>{process.env.REACT_APP_API_TESTE}</p>
+                    <div className="skew-y-12 bg-yellow-500 "></div>
+                    {process.env.REACT_APP_API_TESTE}
                 </div>
             }
 
@@ -51,7 +52,7 @@ export default function Header()
                         </div>
                         <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
                             <li className="border-b border-gray-400 my-8 uppercase">
-                                <a href="/">Informe de Contribuições para Imposto de Renda </a>
+                                <a href="/">Informe IR</a>
                             </li>
 
                         </ul>
@@ -60,7 +61,7 @@ export default function Header()
 
                 <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
                     <li>
-                        <a className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ..." href="/">Informe de Contribuições para Imposto de Renda</a>
+                        <a className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ..." href="/">Informe IR</a>
                     </li>
                 </ul>
             </nav>

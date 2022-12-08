@@ -58,6 +58,7 @@ const ArquivosList = () =>
     });
   }
 
+  
 
   
   if (data)
@@ -109,20 +110,20 @@ const ArquivosList = () =>
     return (
       <>
     
-          <div class="flex justify-center ...">
+          <div className="flex justify-center ...">
       
-        <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
+            <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
 
-      </div>
+          </div>
       
-      <div class="flex justify-center ...">
-          <div>
-                <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
-                Informe para Imposto de Renda não disponível!
-              </label>
-        </div>
-       
-      </div>
+          <div className="flex justify-center ...">
+              <div>
+                    <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    Informe para Imposto de Renda não disponível!
+                  </label>
+              </div>
+        
+          </div>
       </>
     )
 

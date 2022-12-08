@@ -1,6 +1,8 @@
 import { useLocation } from "react-router-dom";
 import useFetch from '../useFetch.js';
 import { useNavigate } from "react-router-dom";
+import Aviso from '../Aviso.jpg'
+import { redirect } from "react-router-dom";
 
 const CartoesBeneficiario = () =>
 {
@@ -58,6 +60,28 @@ const CartoesBeneficiario = () =>
 
   if (data)
   {
+    if (data.length===0) {
+      return (
+        <>
+          <div className="text-center mt-10">
+              <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+          </div>
+
+          <div className="flex justify-center mt-5">
+                
+          <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
+          
+                  <label className="block  tracking-wide text-gray-700 text-xs font-bold mt-7">
+                  Informe para Imposto de Renda não disponível!
+                </label>
+            </div>
+          
+        
+        </>
+      )
+
+    }
+
     return (
       <>
 
@@ -109,7 +133,6 @@ const CartoesBeneficiario = () =>
         </div>
       </>
     )
-
 
   }
 }
