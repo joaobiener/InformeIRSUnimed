@@ -1,8 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import useFetch from '../useFetch.js';
-import { useNavigate } from "react-router-dom";
 import Aviso from '../Aviso.jpg'
-import { redirect } from "react-router-dom";
+import InputMask from "react-input-mask";
 
 const CartoesBeneficiario = () =>
 {
@@ -11,6 +10,35 @@ const CartoesBeneficiario = () =>
 
   //let urlApi = `https://localhost:7095/api/InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
 
+  let urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
+  
+  
+  if (location.state.data.Carteira!==''){
+    console.table(location.state.data);
+    urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoDocumentoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}/${location.state.data.Carteira}`;
+  } 
+
+
+  
+  const formataCPF = (cpf) =>
+  {
+    if (cpf.length === 11)
+    {
+      //retira os caracteres indesejados...
+      cpf = cpf.replace(/[^\d]/g, "");
+
+      //realizar a formatação...
+      return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+    }
+    else 
+    {
+      //27.459.372/0001-37
+      cpf = cpf.replace(/[^\d]/g, "");
+
+      //realizar a formatação...
+      return cpf.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
+    }
+  }
 
   const formataMatricula = (matricula) =>
   {
@@ -21,9 +49,32 @@ const CartoesBeneficiario = () =>
     return matricula.replace(/(\d{4})(\d{6})(\d{2})(\d{1})/, "$1.$2.$3-$4");
   }
 
-  let urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoCartoesBenef/${location.state.data.AnoReferencia}/${location.state.data.CPF}`;
+
+
+  
   const { data, loading, error, refetch } = useFetch(urlApi);
 
+   if (error){
+    return (
+      <>
+        <div className="text-center mt-10">
+            <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+        </div>
+
+        <div className="flex justify-center mt-5">
+              
+        <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
+        
+                <label className="block  tracking-wide text-gray-700 text-xs font-bold mt-7">
+                Informe para Imposto de Renda não disponível!
+              </label>
+          </div>
+        
+      
+      </>
+    )
+    //navigate('/');
+  } 
 
   if (loading) 
   {
@@ -88,6 +139,32 @@ const CartoesBeneficiario = () =>
         <div className="container mx-auto mt-5 px-4">
           <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
 
+          <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              </thead>
+              <tbody>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    Nome Beneficiário
+                  </th>
+                  <td className="text-xs py-4 px-6">
+                    {data[0].nomeBeneficiario}
+                  </td>
+                </tr>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    CPF
+                  </th>
+                  <td className="text-xs py-4 px-6">
+                  {formataCPF(data[0].documentoBenefiario)}
+                  </td>
+                </tr>
+
+              </tbody>
+            
+            </table>
+          </div>
           <div className="flex flex-col">
             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">

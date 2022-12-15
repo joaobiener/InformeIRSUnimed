@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from "react-route
 import Home from "./components/Home";
 import NoPage from "./components/NoPage";
 import CartoesBeneficiario from './components/CartoesBeneficiario';
+import ArquivosList from './components/ArquivosList';
 import InformeIR from './components/InformeIR';
 import Header from './components/Header';
 import { useState } from 'react';
@@ -17,6 +18,7 @@ function App()
   // setshowHeaderFooter(location.pathname!=="/components/InformeIR");
 
   return (
+    
     <Router>
     <Header />
      
@@ -24,6 +26,7 @@ function App()
 
         <Route path="/" element={<Home />} />
         <Route path="/CartoesBeneficiario" element={<CartoesBeneficiario />} />
+        <Route path="/ArquivosList" element={<ArquivosList />} />
         <Route path="/InformeIR" element={<InformeIR />} />
        
         

@@ -12,7 +12,7 @@ export default function Header()
             </a>
 
             {
-                process.env.REACT_APP_API_TESTE != "Produção" &&
+                process.env.REACT_APP_API_TESTE !== "Produção" &&
                 <div className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ...">
                     <div className="skew-y-12 bg-yellow-500 "></div>
                     {process.env.REACT_APP_API_TESTE}

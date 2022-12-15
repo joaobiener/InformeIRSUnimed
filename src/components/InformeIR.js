@@ -1,9 +1,9 @@
-import { useLocation } from "react-router-dom";
 import useFetch from '../useFetch.js';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import React, { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 import Logo from '../layout_set_logo.png'
+import Aviso from '../Aviso.jpg'
 
 const InformeIR = () =>
 {
@@ -11,11 +11,46 @@ const InformeIR = () =>
   const handePrint = useReactToPrint({
     content: () => componentRef.current,
     documentTitle: 'emp-data'
+    
   });
+
+const marginTop="5px"
+const marginRight="5px"
+const marginBottom="5px"
+const marginLeft="5px"
+
+
+const getPageMargins = () => {
+  return `@page { margin: ${marginTop} ${marginRight} ${marginBottom} ${marginLeft} !important; 
+
+        }
+        parentContainer: {
+          '@media print': {
+              display: 'block'
+          },
+       }
+        @media all {
+          .pagebreak {
+            display: none;
+          }
+        }
+        @page {
+          @bottom-right {
+           content: counter(page) " of " counter(pages);
+          }
+       }
+      
+
+        @media print {
+          .pagebreak {
+            page-break-before: always;
+          }
+        }`;
+};
 
   const navigate = useNavigate();
   const location = useLocation();
-
+  
 
   let urlApi = `${process.env.REACT_APP_API_URL}InformeIRValores/BuscaPorAnoContratoDocumentoTitular/${location.state.ano}/${location.state.Contrato}/${location.state.DocumentoTitular}`;
 
@@ -61,6 +96,13 @@ const InformeIR = () =>
     return str.split('-').reverse().join('-');
   }
 
+  if (error && !data)
+  {
+    return (
+      { refetch }
+    )
+  }
+
   if (loading) 
   {
     return (
@@ -83,11 +125,48 @@ const InformeIR = () =>
   {
     let temPagamentos = data.filter(data => data.tipoRegisto <= 2).length > 0
     let temReembolso = data.filter(data => data.tipoRegisto >= 3).length > 0
-    let nomeTitular = data.filter(data => data.tipoDependencia == "Titular")[0].nomeBeneficiario;
+    let nomeTitular = data.filter(data => data.tipoDependencia === "Titular")[0].nomeBeneficiario
+
+    let pagamentos = data.filter(data => data.tipoRegisto <= 2);
+    let reembolsos = data.filter(data => data.tipoRegisto >= 3);
+
+    const sumPagamentos = pagamentos.reduce((acumulador, object) => {
+      return acumulador + object.valorInforme;
+    }, 0);
+
+    const sumReembolso = reembolsos.reduce((acumulador, object) => {
+      return acumulador + object.valorInforme;
+    }, 0);
+
+    if (data.length === 0)
+    {
+      return (
+        <>
+          <div className="text-center mt-10">
+            <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
+          </div>
+
+          <div className="flex justify-center mt-5">
+
+            <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
+
+            <label className="block  tracking-wide text-gray-700 text-xs font-bold mt-7">
+              Informe para Imposto de Renda não disponível!
+            </label>
+          </div>
+
+
+        </>
+      )
+
+    }
+
+
 
     return (
-      <>
 
+      <>
+        <style>{getPageMargins()}</style>
 
         <div className="flex flex-row">
           <div className="grow">
@@ -98,14 +177,15 @@ const InformeIR = () =>
           </div>
         </div>
 
-
+        
         <div ref={componentRef} className="container mx-auto mt-5 px-8">
+       
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th colSpan="1" scope="col" className="py-3 px-6 ">
-                    <img src={Logo} />
+                    <img src={Logo} alt="" />
                   </th>
                   <th colSpan="1" scope="col" className="py-3 px-6 ">
                     <span className="inline uppercase">
@@ -127,7 +207,7 @@ const InformeIR = () =>
                     Informe de Pagamento -  <span className="text-red-800">{data[0].anoReferencia}</span>
                   </th>
                   <th scope="col" className="py-3 px-4 ">
-
+                  
                   </th>
                 </tr>
               </thead>
@@ -136,7 +216,7 @@ const InformeIR = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Cliente
                   </th>
-                  <td className="py-4 px-6">
+                  <td className="text-xs py-4 px-6">
                     {nomeTitular} - CPF: {formataCPF(data[0].documentoTitular)}
                   </td>
                 </tr>
@@ -144,7 +224,7 @@ const InformeIR = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Contrato
                   </th>
-                  <td className="py-4 px-6">
+                  <td className="text-xs py-4 px-6">
                     {data[0].contrato}
                   </td>
                 </tr>
@@ -152,7 +232,7 @@ const InformeIR = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Codigo Beneficiário
                   </th>
-                  <td className="py-4 px-6">
+                  <td className="text-xs py-4 px-6">
                     {formataMatricula(data[0].codigoCartaoTitular)}
                   </td>
                 </tr>
@@ -160,121 +240,152 @@ const InformeIR = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Data Inclusão
                   </th>
-                  <td className="py-4 px-6">
+                  <td className="text-xs py-4 px-6">
                     {reverseData(data[0].dataInclusaoBeneficiario.substring(0, 10))}
                   </td>
                 </tr>
               </tbody>
+            
             </table>
           </div>
-
-
+          
+         
           {temPagamentos &&
+          
             <>
-              <h3 className="px-6">Beneficiários:</h3>
+               
               <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
+                    <h3 className="px-2 py-4 font-semibold">Beneficiários:</h3>
                       <table className="min-w-full">
                         <thead className="bg-white border-b">
 
 
                           <tr>
 
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
-                            Matrícula / CPF
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
+                              Matrícula 
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
+                              CPF 
+                            </th>
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               Data de Inclusão
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               Grau de Parantesco
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
+                              Data Nascimento
+                            </th>                            
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               Nome
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-right">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-right">
                               Valor Pago
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data.filter(data => data.tipoRegisto <= 2).map((pagamento, index) => (
-
-                            <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                        
+                          {
+                            
+                            pagamentos.map((pagamento, index) => (
                               
+                              <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                              {formataMatricula(pagamento.codigoCartaoBeneficiario)} <br /> {formataCPF(pagamento.documentoBenefiario)}
-                              </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {reverseData(pagamento.dataInclusaoBeneficiario.substring(0, 10))}
-                              </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {pagamento.tipoDependencia}
-                              </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
-                                {pagamento.nomeBeneficiario}
-                              </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap text-right">
-                                {formateCurrency(pagamento.valorInforme)}
-                              </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {formataMatricula(pagamento.codigoCartaoBeneficiario)}
+                                </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {formataCPF(pagamento.documentoBenefiario)}
+                                </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {reverseData(pagamento.dataInclusaoBeneficiario.substring(0, 10))}
+                                </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {pagamento.tipoDependencia}
+                                </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {reverseData(pagamento.dataNascimentoBenef.substring(0, 10))}
+                                </td>                              
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
+                                  {pagamento.nomeBeneficiario}
+                                </td>
+                                <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap text-right">
+                                  {formateCurrency(pagamento.valorInforme)}
+                                </td>
 
-                            </tr>
+                              </tr>
 
-                          ))}
+                            ))
+                          }
                         </tbody>
+                          <tfoot>
+                            <tr>
+                                
+                                <th colSpan={7} className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap text-right">
+                                  <sapn className="text-sm font-medium text-gray-900 px-2 py-4 text-right">Total:</sapn>  {formateCurrency(sumPagamentos)}
+                                 </th>
+                            </tr>
+                        </tfoot>
                       </table>
                     </div>
                   </div>
                 </div>
               </div>
+             
             </>
           }
           {temReembolso &&
             <>
-              <h3 className="px-6 py-4">Reembolso:</h3>
+
+            <div className="pagebreak"></div>
               <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
+                    <h3 className="px-2 py-4 font-semibold">Reembolso:</h3>
                       <table className="min-w-full">
                         <thead className="bg-white border-b">
                           <tr>
 
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               Matricula
                             </th>
 
 
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               Emissor
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-left">
                               CPF/CNPJ
                             </th>
-                            <th scope="col" className="text-sm font-medium text-gray-900 px-6 py-4 text-right">
+                            <th scope="col" className="text-sm font-medium text-gray-900 px-2 py-4 text-right">
                               Valor Reembolsado
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {data.filter(data => data.tipoRegisto >= 3).map((reembolso, index) => (
+                          {reembolsos.map((reembolso, index) => (
 
-                            <tr key={index}  className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
+                            <tr key={index} className="border-b transition duration-300 ease-in-out hover:bg-gray-100">
 
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
                                 {formataMatricula(reembolso.codigoCartaoBeneficiario)}
                               </td>
 
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
                                 {reembolso.nomeBeneficiario}
                               </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap">
+                              <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap">
                                 {formataCPF(reembolso.documentoBenefiario)}
                               </td>
-                              <td className="text-xs text-gray-900 font-light px-6 py-4 whitespace-nowrap text-right">
+                            
+
+                              <td className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap text-right">
                                 {formateCurrency(reembolso.valorInforme)}
                               </td>
 
@@ -282,13 +393,25 @@ const InformeIR = () =>
 
                           ))}
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                
+                                
+                                <th colSpan={5}  className="text-xs text-gray-900 font-light px-2 py-4 whitespace-nowrap text-right">
+                                <sapn className="text-sm font-medium text-gray-900 px-2 py-4 text-right">Total:</sapn>{formateCurrency(sumReembolso)}
+                                 </th>
+                            </tr>
+                        </tfoot>
+
                       </table>
                     </div>
                   </div>
                 </div>
+                
               </div>
             </>
           }
+          
         </div>
       </>
     )

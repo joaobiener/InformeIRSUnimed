@@ -1,11 +1,10 @@
-import ArquivosList from "./ArquivosList";
+import ArquivosListBenef from "./ArquivosListBenf";
 
 
 const Home = () =>
 {
     return <>
-
-        <ArquivosList />
+        <ArquivosListBenef />
     </>
     ;
 };
