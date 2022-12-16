@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import Home from "./components/Home";
 import NoPage from "./components/NoPage";
@@ -26,13 +26,10 @@ function App()
 
         <Route path="/" element={<Home />} />
         <Route path="/CartoesBeneficiario" element={<CartoesBeneficiario />} />
+        <Route path="/IncioAdmin" element={<ArquivosList />} />
         <Route path="/ArquivosListBenf" element={<ArquivosListBenf />} />
-        <Route path="/ArquivosList" element={<ArquivosList />} />
         <Route path="/InformeIR" element={<InformeIR />} />
-      {/*   <Route path={`${process.env.REACT_APP_PUBLIC_URL }/InformeIR`} element={<InformeIR />} /> */}
-        
-       
-        
+      
         <Route path="*" element={<NoPage />} />
 
       </Routes>
