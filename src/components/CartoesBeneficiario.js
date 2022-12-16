@@ -1,7 +1,7 @@
 import { useLocation,useNavigate } from "react-router-dom";
 import useFetch from '../useFetch.js';
 import Aviso from '../Aviso.jpg'
-import InputMask from "react-input-mask";
+
 
 const CartoesBeneficiario = () =>
 {

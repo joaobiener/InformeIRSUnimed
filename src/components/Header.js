@@ -7,7 +7,7 @@ export default function Header()
 
     return (
         <div className="flex items-center justify-between border-b border-gray-400 py-4 px-4">
-            <a href="/">
+            <a href="/InformeIR">
                 <img src={Logo} className="rounded w-25 h-20" alt="logo" />
             </a>
 
@@ -52,7 +52,7 @@ export default function Header()
                         </div>
                         <ul className="MENU-LINK-MOBILE-OPEN flex flex-col items-center justify-between min-h-[250px]">
                             <li className="border-b border-gray-400 my-8 uppercase">
-                                <a href="/">Informe IR</a>
+                                <a href="/InformeIR">Informe IR</a>
                             </li>
 
                         </ul>
@@ -61,7 +61,8 @@ export default function Header()
 
                 <ul className="DESKTOP-MENU hidden space-x-8 lg:flex">
                     <li>
-                        <a className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ..." href="/">Informe IR</a>
+                        <a className="ml-8 p-5 text-white rounded-xl transition-all duration-700 bg-gradient-to-r from-green-900 to-green-500 hover:from-green-500 hover:to-green-900 ..." 
+                        href="/InformeIR">Informe IR</a>
                     </li>
                 </ul>
             </nav>

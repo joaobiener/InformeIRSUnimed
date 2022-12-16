@@ -23,6 +23,7 @@
     "start:staging": "env-cmd -f .env.staging react-scripts start",
     "start:prod": "env-cmd -f .env.production react-scripts start",
     "build": "react-scripts build",
+    "build:development": "env-cmd -f .env.development react-scripts build",
     "build:staging": "env-cmd -f .env.staging react-scripts build",
     "build:prod": "env-cmd -f .env.production react-scripts build",
     "test": "react-scripts test",
@@ -34,7 +35,7 @@
       "react-app/jest"
     ]
   },
-  "homepage": "./InformaFE",
+  "homepage": "http:/localhost/InformeIR",
   "browserslist": {
     "production": [
       ">0.2%",
