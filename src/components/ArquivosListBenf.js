@@ -71,11 +71,12 @@ const ArquivosListBenef = () =>
     return (
       <>
 
-        <div className="container mt-10  ml-60  px-4">
+        <div className="mt-10 flex flex-col 
+                    items-center justify-center">
 
           <form onSubmit={handleSubmit(onSubmit)}>
 
-            <div className="w-60 text-align">
+            
 
               <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                 Ano de Referência
@@ -95,17 +96,27 @@ const ArquivosListBenef = () =>
 
               </div>
 
-              <InputMask  {...register("CPF", { required: true, minLength:11 })} placeholder='CPF' mask='999.999.999-99' maskChar={null} id="small-input" className="mt-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+              <InputMask  
+                  {...register("CPF", { required: true, 
+                                        minLength:14 })} 
+                  placeholder='CPF' mask='999.999.999-99' maskChar={null} id="small-input" 
+                  className="mt-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 
+                  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
               {errors.CPF && <p className="text-red-500">CPF Inválido!</p>}
 
 
-              <div class="flex items-center">
+              <div className="flex items-center">
                 <label className="mt-4 pr-1 sm:text-sm font-medium text-gray-900 dark:text-white">0.017</label>
-                <InputMask  {...register("Carteira", { required: true })} placeholder='Carteira Beneficiário'
+                <InputMask  
+                {...register("Carteira",{ 
+                       required: true, 
+                       minLength:16 })}
+                                        placeholder='Carteira Beneficiário'
                   mask='9999.999999.99-9' maskChar={null} id="small-input" 
-                  className="mt-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                {errors.Carteira && <p className="text-red-500">Carteira de beneficiário obrigatório!</p>}
+                  className="mt-5 block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                
               </div>
+              {errors.Carteira && <p className="text-red-500">Carteira de beneficiário obrigatório!</p>}
 
               <div className='mt-6'>
                 <button type="Submit" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -113,7 +124,7 @@ const ArquivosListBenef = () =>
                 </button>
               </div>
 
-            </div>
+            
 
           </form>
         </div>

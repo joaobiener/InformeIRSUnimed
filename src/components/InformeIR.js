@@ -40,7 +40,9 @@ const getPageMargins = () => {
           }
        }
       
-
+       @media print {
+        footer {page-break-after: always;}
+      }
         @media print {
           .pagebreak {
             page-break-before: always;
@@ -126,7 +128,7 @@ const getPageMargins = () => {
     let temPagamentos = data.filter(data => data.tipoRegisto <= 2).length > 0
     let temReembolso = data.filter(data => data.tipoRegisto >= 3).length > 0
     let nomeTitular = data.filter(data => data.tipoDependencia === "Titular")[0].nomeBeneficiario
-
+    let numPaginas = (temReembolso?2:1);
     let pagamentos = data.filter(data => data.tipoRegisto <= 2);
     let reembolsos = data.filter(data => data.tipoRegisto >= 3);
 
@@ -179,8 +181,9 @@ const getPageMargins = () => {
 
         
         <div ref={componentRef} className="container mx-auto mt-5 px-8">
-        <div className='text-right text-xs'>Página 1/2</div>
+        
           <div className="overflow-x-auto relative shadow-md sm:rounded-lg mb-5">
+          <header className='text-right text-xs '>Página 1/{numPaginas}</header>
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -253,7 +256,8 @@ const getPageMargins = () => {
           {temPagamentos &&
           
             <>
-               
+             
+             
               <div className="flex flex-col">
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
@@ -335,24 +339,26 @@ const getPageMargins = () => {
                     </div>
                   </div>
                 </div>
-               
+                
               </div>
               
             </>
           }
           {temReembolso &&
             <>
-
-            <div className="pagebreak"></div>
+            <header></header>
            
+          
               <div className="flex flex-col">
+              
                 <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
                   <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="overflow-hidden">
-                    <div className='text-right text-xs'>Página 2/2</div>
-                    <h3 className="px-2 py-4 font-semibold">Reembolso:</h3>
-                    
-                      <table className="min-w-full">
+                    <div className="relative">
+                      <h3 className="absolute left-0 px-2 font-semibold">Reembolso:</h3>
+                      <p className="absolute right-0 text-xs">Página 2/{numPaginas}</p>
+                    </div>
+                      <table className="min-w-full mt-10">
                         <thead className="bg-white border-b">
                           <tr>
 
@@ -411,7 +417,7 @@ const getPageMargins = () => {
                     </div>
                   </div>
                 </div>
-                
+              
               </div>
               
             </>
