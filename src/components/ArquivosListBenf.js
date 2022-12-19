@@ -51,7 +51,29 @@ const ArquivosListBenef = () =>
     )
   }
 
-  if (error) console.log(error);
+  if (error){
+    return (
+      <>
+        <div className="flex justify-center ...">
+
+        <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
+
+        </div>
+
+        <div className="flex justify-center ...">
+        <div>
+          <label className="block  tracking-wide text-gray-700 text-sm font-bold mb-2">
+            Informe para Imposto de Renda não disponível!
+          </label>
+        </div>
+
+        </div>
+        
+      
+      </>
+    )
+    //navigate('/');
+  } 
 
   const getAnos = () =>
   {
@@ -146,7 +168,7 @@ const ArquivosListBenef = () =>
 
         <div className="flex justify-center ...">
           <div>
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
+            <label className="block  tracking-wide text-gray-700 text-sm font-bold mb-2">
               Informe para Imposto de Renda não disponível!
             </label>
           </div>

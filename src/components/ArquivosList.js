@@ -131,7 +131,7 @@ const ArquivosList = () =>
 
         <div className="flex justify-center ...">
           <div>
-            <label className="block  tracking-wide text-gray-700 text-xs font-bold mb-2">
+            <label className="block  tracking-wide text-gray-700 text-sm font-bold mb-2">
               Informe para Imposto de Renda não disponível!
             </label>
           </div>

@@ -57,7 +57,9 @@ const CartoesBeneficiario = () =>
    if (error){
     return (
       <>
-        <div className="text-center mt-10">
+
+
+      <div className="text-center mt-10">
             <button onClick={() => navigate(-1)} type="button" className="inline-block px-6 py-2.5 bg-gray-200 text-gray-700 font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">Voltar</button>
         </div>
 
@@ -65,10 +67,11 @@ const CartoesBeneficiario = () =>
               
         <div> <img src={Aviso} className="mx-auto ml-10 w-24 h-24 ..." alt="Aviso" /></div>
         
-                <label className="block  tracking-wide text-gray-700 text-xs font-bold mt-7">
+                <label className="block  tracking-wide text-gray-700 text-sd font-bold mt-7">
                 Informe para Imposto de Renda não disponível!
               </label>
           </div>
+        
         
       
       </>
@@ -148,7 +151,7 @@ const CartoesBeneficiario = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     Nome Beneficiário
                   </th>
-                  <td className="text-xs py-4 px-6">
+                  <td className="text-sm py-4 px-6">
                     {data[0].nomeBeneficiario}
                   </td>
                 </tr>
@@ -156,7 +159,7 @@ const CartoesBeneficiario = () =>
                   <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     CPF
                   </th>
-                  <td className="text-xs py-4 px-6">
+                  <td className="text-sm py-4 px-6">
                   {formataCPF(data[0].documentoBenefiario)}
                   </td>
                 </tr>
